@@ -72,6 +72,14 @@ int main()
                 if(cmd=="Quit")
                 {
                     cout<<"输出：已登出"<<endl;
+                    for(int i=0;i<6;i++)
+                        for(int j=0;j<10;j++)
+                            for(int k=0;k<10;k++)
+                                for(int l=0;l<10;l++)
+                                {
+                                    if(a[i][j][k][l].state==2)
+                                        a[i][j][k][l].state=1;
+                                }
                     break;
                 }
                 if(cmd=="Reserve")
@@ -89,7 +97,10 @@ int main()
                 }
                 else if(cmd=="Reservation")
                 {
-                    if(flag)    cout<<"输出："<<date<<" floor "<<floor<<" Seat "<<x<<" "<<y<<endl;
+                    if(flag)
+                    {
+                        cout<<"输出："<<date<<" floor "<<floor<<" Seat "<<x<<" "<<y<<endl;
+                    }
                     else    cout<<"输出：No reservation"<<endl;
                 }
                 else if(cmd=="Clear"&&name=="Admin")

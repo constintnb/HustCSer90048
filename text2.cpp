@@ -4,7 +4,7 @@ map<string,string> m;
 string s,st;
 int main()
 {
-    ifstream fin("text2.txt");
+    ifstream fin("data.txt");
     while(getline(fin,s))
     {
         string s1,s2;
