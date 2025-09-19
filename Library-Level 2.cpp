@@ -8,6 +8,7 @@ struct edge
 {
     char user[10];
     int state;
+    bool ava;
 }a[10][10][10][10];
 //5层7天4行4列
 int fx=4,fy=4;
@@ -20,6 +21,16 @@ int get_date(string str)
         if(str==date[i])
             return i;
     return -1;
+}
+void init()
+{
+    for(int i=1;i<=5;i++)
+        for(int j=1;j<=7;j++)
+            for(int k=1;k<=4;k++)
+                for(int l=1;l<=4;l++)
+                {
+                    a[i][j][k][l].ava=true;
+                }
 }
 void help()
 {
@@ -77,6 +88,7 @@ void clear()
 
 int main()
 {
+    init();
     read();
     cout<<"欢迎使用图书馆预约系统！"<<endl;
     cout<<"请输入“Login”以登录系统，或输入“Exit”以退出程序。"<<endl;
@@ -90,7 +102,8 @@ int main()
             cout<<"输出：请输入用户名"<<endl<<"输入：";
             cin>>name;
             cout<<"输出：登陆成功"<<endl;
-            
+            help();
+
             bool flag=0;
             string cmd,date;
             int floor,x,y,n;
@@ -98,7 +111,7 @@ int main()
             {
                 cout<<"输入：";
                 cin>>cmd;
-                if(cmd=="Quit")
+                if(cmd=="Quit"||cmd=="Exit")
                 {
                     cout<<"输出：已登出"<<endl;
                     for(int i=0;i<6;i++)
@@ -109,8 +122,15 @@ int main()
                                     if(a[i][j][k][l].state==2)
                                         a[i][j][k][l].state=1;
                                 }
+                    save();
+                    if(cmd=="Exit")
+                    {
+                        cout<<"输出：退出成功"<<endl;
+                        return 0;
+                    }
                     break;
                 }
+
                 if(cmd=="Reserve")
                 {
                     cout<<"输出：请输入日期"<<endl<<"输入：";
@@ -125,11 +145,11 @@ int main()
                         string uname,op;
                         cout<<"输出：请输入用户名"<<endl<<"输入：";
                         cin>>uname;
-                        cout<<"输出：请输入需要进行的预约操作（Reserve/Cancel）"<<endl<<"输入：";
+                        cout<<"输出：请输入需要进行的预约操作（Add/Cancel）"<<endl<<"输入：";
                         cin>>op;
-                        if(op=="Reserve")
+                        if(op=="Add")
                         {
-                            if(a[floor][n][x][y].state==0)
+                            if(a[floor][n][x][y].state==0&&a[floor][n][x][y].ava)
                             {
                                 a[floor][n][x][y].state=1;
                                 strcpy(a[floor][n][x][y].user,uname.c_str());
@@ -181,7 +201,12 @@ int main()
                     {
                         for(int j=1;j<=fy;j++)
                         {
-                            cout<<a[floor][n][i][j].state;
+                            if(a[floor][n][i][j].ava)
+                            {
+                                if(a[floor][n][i][j].state!=0&&name=="Admin")   cout<<a[floor][n][i][j].user;
+                                else cout<<a[floor][n][i][j].state;
+                            }
+                            else    cout<<"X";
                         }
                         cout<<endl;
                     }
@@ -199,12 +224,26 @@ int main()
                     }
                     else if(cmd=="Extend")
                     {
-                        if(fx<9&&fy<9)
+                        if(fx<=9&&fy<=9)
                         {
-                            fx++;
-                            fy++;
-                            cout<<"输出：拓展成功"<<endl;
-                            save();
+                            cout<<"输出：请输入座位位置（行 列）"<<endl<<"输入：";
+                            cin>>x>>y;
+                            if(x<=9&&y<=9)
+                            {
+                                if(x>fx) fx++;
+                                if(y>fy) fy++;
+                                for(int i=1;i<=5;i++)
+                                    for(int j=1;j<=7;j++)
+                                    {
+                                        a[i][j][x][y].ava=true;
+                                    }
+                                cout<<"输出：拓展成功"<<endl;
+                                save();
+                            }
+                            else
+                            {
+                                cout<<"输出：输入位置超出当前范围，无法拓展"<<endl;
+                            }
                         }
                         else
                             cout<<"输出：已达最大容量，无法拓展"<<endl;
@@ -213,8 +252,13 @@ int main()
                     {
                         if(fx>1&&fy>1)
                         {
-                            fx--;
-                            fy--;
+                            cout<<"输出：请输入座位位置（行 列）"<<endl<<"输入：";
+                            cin>>x>>y;
+                            for(int i=1;i<=5;i++)
+                                for(int j=1;j<=7;j++)
+                                {
+                                    a[i][j][x][y].ava=false;
+                                }
                             cout<<"输出：减少成功"<<endl;
                             save();
                         }
@@ -248,7 +292,7 @@ int main()
                             cout<<"输出：请输入日期"<<endl<<"输入：";
                             cin>>date;
                             n=get_date(date)+1;
-                            for(int i=0;i<6;i++)
+                            for(int i=1;i<=7;i++)
                             {
                                 for(int j=1;j<=fx;j++)
                                 {
