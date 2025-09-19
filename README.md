@@ -1,11 +1,13 @@
 # HustCSer90048
 
-# 说明
+## 说明
 2025级Dian招新题目
 
 data.txt为text2的测试数据
 
 lib.bin为Library-Level 1的数据存储文件
+
+lib2.bin为Library-Level 2的数据存储文件
 
 Library-Level 2是以Library-Level 1为基础的优化及升级版本
 
