@@ -11,7 +11,7 @@ struct edge
     bool ava;
 }a[10][10][10][10];
 //5层7天4行4列
-int fx=4,fy=4;
+int fx,fy;
 string s;
 string date[]={"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
 
@@ -90,6 +90,10 @@ int main()
 {
     init();
     read();
+    if(fx<1||fx>9||fy<1||fy>9)
+    {
+        fx=4;fy=4;
+    }
     cout<<"欢迎使用图书馆预约系统！"<<endl;
     cout<<"请输入“Login”以登录系统，或输入“Exit”以退出程序。"<<endl;
     while(1)
@@ -194,6 +198,7 @@ int main()
                     cout<<"输出：请输入日期"<<endl<<"输入：";
                     cin>>date;
                     n=get_date(date)+1;
+                    //cout<<n<<endl;
                     cout<<"输出：请输入楼层"<<endl<<"输入：";
                     cin>>floor;
                     cout<<"输出："<<endl;
@@ -201,10 +206,11 @@ int main()
                     {
                         for(int j=1;j<=fy;j++)
                         {
-                            if(a[floor][n][i][j].ava)
+                            
+                            if(a[floor][n][i][j].ava==true)
                             {
-                                if(a[floor][n][i][j].state!=0&&name=="Admin")   cout<<a[floor][n][i][j].user;
-                                else cout<<a[floor][n][i][j].state;
+                                if(a[floor][n][i][j].state!=0&&name=="Admin")   cout<<a[floor][n][i][j].user<<" ";
+                                else cout<<a[floor][n][i][j].state<<" ";
                             }
                             else    cout<<"X";
                         }
@@ -292,7 +298,7 @@ int main()
                             cout<<"输出：请输入日期"<<endl<<"输入：";
                             cin>>date;
                             n=get_date(date)+1;
-                            for(int i=1;i<=7;i++)
+                            for(int i=1;i<=5;i++)
                             {
                                 for(int j=1;j<=fx;j++)
                                 {
