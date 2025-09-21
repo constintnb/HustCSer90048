@@ -133,6 +133,7 @@ int main()
                         return 0;
                     }
                     break;
+                    cout<<"输出：输入Login以登录，或输入Exit以退出程序"<<endl;
                 }
 
                 if(cmd=="Reserve")
@@ -212,7 +213,6 @@ int main()
                                 if(a[floor][n][i][j].state!=0&&name=="Admin")   cout<<a[floor][n][i][j].user<<" ";
                                 else cout<<a[floor][n][i][j].state<<" ";
                             }
-                            else    cout<<"X";
                         }
                         cout<<endl;
                     }
@@ -232,17 +232,18 @@ int main()
                     {
                         if(fx<=9&&fy<=9)
                         {
+                            cout<<"输出：请输入楼层号"<<endl<<"输入：";
+                            cin>>floor;
                             cout<<"输出：请输入座位位置（行 列）"<<endl<<"输入：";
                             cin>>x>>y;
                             if(x<=9&&y<=9)
                             {
                                 if(x>fx) fx++;
                                 if(y>fy) fy++;
-                                for(int i=1;i<=5;i++)
-                                    for(int j=1;j<=7;j++)
-                                    {
-                                        a[i][j][x][y].ava=true;
-                                    }
+                                for(int i=1;i<=7;i++)
+                                {
+                                    a[floor][i][x][y].ava=true;
+                                }
                                 cout<<"输出：拓展成功"<<endl;
                                 save();
                             }
@@ -258,13 +259,15 @@ int main()
                     {
                         if(fx>1&&fy>1)
                         {
+                            cout<<"输出：请输入楼层号"<<endl<<"输入：";
+                            cin>>floor;
                             cout<<"输出：请输入座位位置（行 列）"<<endl<<"输入：";
                             cin>>x>>y;
-                            for(int i=1;i<=5;i++)
-                                for(int j=1;j<=7;j++)
-                                {
-                                    a[i][j][x][y].ava=false;
-                                }
+
+                            for(int i=1;i<=7;i++)
+                            {
+                                a[floor][i][x][y].ava=false;
+                            }
                             cout<<"输出：减少成功"<<endl;
                             save();
                         }
@@ -291,6 +294,7 @@ int main()
                                     }
                                 }
                             }
+                            cout<<"输出：修改完毕"<<endl;
                         }
                         else if(op=="Date")
                         {
@@ -309,6 +313,7 @@ int main()
                                     }
                                 }
                             }
+                            cout<<"输出：修改完毕"<<endl;
                         }
                         else
                         {
@@ -326,6 +331,10 @@ int main()
         {
             cout<<"输出：退出成功"<<endl;
             break;
+        }
+        else
+        {
+            cout<<"输出：指令错误"<<endl;
         }
     }
     return 0;
