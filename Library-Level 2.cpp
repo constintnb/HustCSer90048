@@ -211,6 +211,7 @@ int main()
                             if(a[floor][n][i][j].ava==true)
                             {
                                 if(a[floor][n][i][j].state!=0&&name=="Admin")   cout<<a[floor][n][i][j].user<<" ";
+                                else if(strcmp(a[floor][n][i][j].user,name.c_str())==0&&a[floor][n][i][j].state==1) cout<<"2 ";
                                 else cout<<a[floor][n][i][j].state<<" ";
                             }
                         }

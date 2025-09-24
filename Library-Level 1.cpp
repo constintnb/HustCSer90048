@@ -101,7 +101,7 @@ int main()
                     {
                         cout<<"输出："<<date<<" floor "<<floor<<" Seat "<<x<<" "<<y<<endl;
                     }
-                    else    cout<<"输出：No reservation"<<endl;
+                    else    cout<<"输出：No Reservation"<<endl;
                 }
                 else if(cmd=="Clear"&&name=="Admin")
                 {
@@ -117,7 +117,10 @@ int main()
                     {
                         for(int j=1;j<=4;j++)
                         {
-                            cout<<a[floor][n][i][j].state;
+                            if(strcmp(a[floor][n][i][j].user,name.c_str())==0&&a[floor][n][i][j].state==1)
+                                cout<<"2";
+                            else
+                                cout<<a[floor][n][i][j].state;
                         }
                         cout<<endl;
                     }
