@@ -38,8 +38,8 @@ void help()
     cout<<"1. Reserve - 预约座位"<<endl;
     cout<<"2. Reservation - 查看当前预约"<<endl;
     cout<<"3. Query - 查看特定日期和楼层的座位可用性"<<endl;
-    cout<<"4. Quit - 登出系统"<<endl;
-    cout<<"5. Exit - 退出程序"<<endl;
+    cout<<"4. Exit - 登出系统"<<endl;
+    cout<<"5. Quit - 退出程序"<<endl;
     cout<<"6. Help - 显示帮助信息"<<endl;
 
     cout<<"管理员命令:"<<endl;
@@ -127,13 +127,13 @@ int main()
                                         a[i][j][k][l].state=1;
                                 }
                     save();
-                    if(cmd=="Exit")
+                    if(cmd=="Quit")
                     {
                         cout<<"输出：退出成功"<<endl;
                         return 0;
                     }
                     break;
-                    cout<<"输出：输入Login以登录，或输入Exit以退出程序"<<endl;
+                    cout<<"输出：输入Login以登录，或输入Quit以退出程序"<<endl;
                 }
 
                 if(cmd=="Reserve")
@@ -327,7 +327,7 @@ int main()
                 }
             }
         }
-        else if(s=="Exit")
+        else if(s=="Quit")
         {
             cout<<"输出：退出成功"<<endl;
             break;

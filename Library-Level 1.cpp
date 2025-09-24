@@ -69,7 +69,7 @@ int main()
             {
                 cout<<"输入：";
                 cin>>cmd;
-                if(cmd=="Quit")
+                if(cmd=="Exit")
                 {
                     cout<<"输出：已登出"<<endl;
                     for(int i=0;i<6;i++)
@@ -128,7 +128,7 @@ int main()
                 }
             }
         }
-        else if(s=="Exit")
+        else if(s=="Quit")
         {
             cout<<"输出：退出成功"<<endl;
             break;
