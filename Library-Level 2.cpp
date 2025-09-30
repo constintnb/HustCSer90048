@@ -3,7 +3,10 @@ using namespace std;
 struct sysdata
 {
     int fx,fy;
-};
+    char key[100][100];
+    char value[100][100];
+    int cnt;
+} sd;
 struct edge
 {
     char user[10];
@@ -11,14 +14,14 @@ struct edge
     bool ava;
 }a[10][10][10][10];
 //5层7天4行4列
-int fx,fy;
+int fx,fy,cnt;
 string s;
-string date[]={"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
+string Date[]={"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
 
 int get_date(string str)
 {
     for(int i=0;i<7;i++)
-        if(str==date[i])
+        if(str==Date[i])
             return i;
     return -1;
 }
@@ -31,12 +34,13 @@ void init()
                 {
                     a[i][j][k][l].ava=true;
                 }
+    sd.cnt=0;
 }
 void help()
 {
     cout<<"可用命令:"<<endl;
     cout<<"1. Reserve - 预约座位"<<endl;
-    cout<<"2. Reservation - 查看当前预约"<<endl;
+    cout<<"2. Reservation - 查看已预约信息"<<endl;
     cout<<"3. Query - 查看特定日期和楼层的座位可用性"<<endl;
     cout<<"4. Exit - 登出系统"<<endl;
     cout<<"5. Quit - 退出程序"<<endl;
@@ -54,20 +58,23 @@ void read()
     ifstream file("lib2.bin",ios::binary);
     if(file.is_open())
     {
-        sysdata sd;
         file.read(reinterpret_cast<char*>(&sd), sizeof(sd));
         fx=sd.fx;
         fy=sd.fy;
+        //cnt=sd.cnt;
         file.read(reinterpret_cast<char*>(&a), sizeof(a));
         file.close();
     }
+    else init();
 }
 void save()
 {
     ofstream file("lib2.bin",ios::binary);
     if(file.is_open())
     {
-        sysdata sd={fx,fy};
+        sd.fx=fx;
+        sd.fy=fy;
+        //sd.cnt=cnt;
         file.write(reinterpret_cast<const char*>(&sd), sizeof(sd));
         file.write(reinterpret_cast<const char*>(&a), sizeof(a));
         file.close();
@@ -82,13 +89,35 @@ void clear()
                 {
                     a[i][j][k][l].state=0;
                     strcpy(a[i][j][k][l].user,"");
+                    a[i][j][k][l].ava=false;
                 }
+    init();
+    /*
+    for(int i=0;i<100;i++)
+    {
+        strcpy(sd.key[i],"");
+        strcpy(sd.value[i],"");
+    }
+    */
     save();    
+}
+void info(string name)
+{
+    bool exist=0;
+    cout<<cnt<<endl;
+    for(int i=0;i<=cnt;i++)
+    {
+        if(strcmp(sd.key[i],name.c_str())==0)
+        {
+            cout<<sd.value[i]<<endl;
+            exist=1;
+        }
+    }
+    if(!exist) cout<<"输出：No Reservation"<<endl;
 }
 
 int main()
 {
-    init();
     read();
     if(fx<1||fx>9||fy<1||fy>9)
     {
@@ -157,7 +186,14 @@ int main()
                             if(a[floor][n][x][y].state==0&&a[floor][n][x][y].ava)
                             {
                                 a[floor][n][x][y].state=1;
+
+                                /*
                                 strcpy(a[floor][n][x][y].user,uname.c_str());
+                                strcpy(sd.key[cnt],uname.c_str());
+                                strcpy(sd.value[cnt],(date+to_string(floor)+" "+to_string(x)+" "+to_string(y)).c_str());
+                                cnt++;
+                                */
+
                                 cout<<"输出：OK"<<endl;
                                 save();
                             }
@@ -169,6 +205,16 @@ int main()
                             {
                                 a[floor][n][x][y].state=0;
                                 strcpy(a[floor][n][x][y].user,"");
+
+                                for(int i=0;i<sd.cnt;i++)
+                                {
+                                    if(strcmp(sd.key[i],uname.c_str())==0)
+                                    {
+                                        strcpy(sd.key[i],"");
+                                        strcpy(sd.value[i],"");
+                                    }
+                                }
+
                                 cout<<"输出：OK"<<endl;
                                 save();
                             }
@@ -183,16 +229,52 @@ int main()
                     {
                         strcpy(a[floor][n][x][y].user,name.c_str());
                         a[floor][n][x][y].state=2;
+
+                        /*
+                        strcpy(a[floor][n][x][y].user,name.c_str());
+                        strcpy(sd.key[cnt],name.c_str());
+                        strcpy(sd.value[cnt],(date+to_string(floor)+" "+to_string(x)+" "+to_string(y)).c_str());
+                        cnt++;
+                        */
+
                         cout<<"输出：OK"<<endl;
-                        flag=1;
                         save();
                     }
                     else    cout<<"输出：Fail"<<endl;
                 }
                 else if(cmd=="Reservation")
                 {
-                    if(flag)    cout<<"输出："<<date<<" floor "<<floor<<" Seat "<<x<<" "<<y<<endl;
-                    else    cout<<"输出：No reservation"<<endl;
+                    for(int i=1;i<=5;i++)
+                    {
+                        for(int j=1;j<=7;j++)
+                        {
+                            for(int k=1;k<=fx;k++)
+                            {
+                                for(int l=1;l<=fy;l++)
+                                {
+                                    if(strcmp(a[i][j][k][l].user,name.c_str())==0)
+                                    {
+                                        cout<<"输出："<<Date[j-1]<<" Floor "<<i<<" Seat "<<k<<" "<<l<<endl;
+                                        flag=1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if(!flag) cout<<"输出：No reservation"<<endl;
+                    /*
+                    if(name=="Admin")
+                    {
+                        for(int i=0;i<cnt;i++)
+                        {
+                            if(strcmp(sd.key[i],"")!=0)
+                                cout<<sd.key[i]<<" "<<sd.value[i]<<endl;
+                        }
+                    }
+                    else info(name);
+                    */
+                    //if(flag)    cout<<"输出："<<date<<" floor "<<floor<<" Seat "<<x<<" "<<y<<endl;
+                    //else    cout<<"输出：No reservation"<<endl;
                 }
                 else if(cmd=="Query")
                 {
@@ -207,7 +289,6 @@ int main()
                     {
                         for(int j=1;j<=fy;j++)
                         {
-                            
                             if(a[floor][n][i][j].ava==true)
                             {
                                 if(a[floor][n][i][j].state!=0&&name=="Admin")   cout<<a[floor][n][i][j].user<<" ";
@@ -320,6 +401,10 @@ int main()
                         {
                             cout<<"输出：指令错误"<<endl;
                         }
+                    }
+                    else
+                    {
+                        cout<<"输出：指令错误"<<endl;
                     }
                 }
                 else

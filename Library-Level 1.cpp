@@ -7,12 +7,12 @@ struct edge
 }a[6][10][10][10];
 //5层7天4行4列
 string s;
-string date[]={"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
+string Date[]={"Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"};
 
 int get_date(string str)
 {
     for(int i=0;i<7;i++)
-        if(str==date[i])
+        if(str==Date[i])
             return i;
     return -1;
 }
@@ -91,17 +91,36 @@ int main()
                         strcpy(a[floor][n][x][y].user,name.c_str());
                         a[floor][n][x][y].state=2;
                         cout<<"输出：OK"<<endl;
-                        flag=1;
                         save();
                     }
                 }
                 else if(cmd=="Reservation")
                 {
+                    for(int i=1;i<=5;i++)
+                    {
+                        for(int j=1;j<=7;j++)
+                        {
+                            for(int k=1;k<=4;k++)
+                            {
+                                for(int l=1;l<=4;l++)
+                                {
+                                    if(strcmp(a[i][j][k][l].user,name.c_str())==0)
+                                    {
+                                        cout<<"输出："<<Date[j-1]<<" Floor "<<i<<" Seat "<<k<<" "<<l<<endl;
+                                        flag=1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if(!flag) cout<<"输出：No reservation"<<endl;
+                    /*
                     if(flag)
                     {
                         cout<<"输出："<<date<<" floor "<<floor<<" Seat "<<x<<" "<<y<<endl;
                     }
                     else    cout<<"输出：No Reservation"<<endl;
+                    */
                 }
                 else if(cmd=="Clear"&&name=="Admin")
                 {
